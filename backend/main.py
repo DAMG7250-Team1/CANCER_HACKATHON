@@ -1,12 +1,13 @@
 import os
 import asyncio
+import sys
 import chromadb
 import tempfile
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from dotenv import load_dotenv
 load_dotenv()
-
+import sys
 from core.s3_client import S3FileManager
 from features.chunking_stratergy import markdown_chunking, semantic_chunking, sliding_window_chunking
 from agents.rag_agent import connect_to_pinecone_index, get_embedding, query_pinecone
@@ -14,6 +15,9 @@ from features.mistral_parser import pdf_mistralocr_converter
 
 from openai import OpenAI
 from pinecone import Pinecone, ServerlessSpec
+# Add the project root directory to Python path
+project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.append(project_root)
 
 class NVDIARequest(BaseModel):
     year: str
