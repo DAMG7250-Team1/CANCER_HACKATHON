@@ -1,0 +1,59 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+ENV/
+awscli-env/
+env/
+.env/
+.venv/
+env.bak/
+venv.bak/
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Distribution / packaging
+dist/
+build/
+*.egg-info/
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.coverage
+.coverage.*
+.cache
+coverage.xml
+*.cover
+
+# Environment variables and secrets
+.env
+.env.*
+*.env
+secrets.json
+credentials.json
+
+# Logs
+*.log
+logs/
+
+# Virtual Environment
+venv/
+ENV/
+env/
+.env/
+.venv/
+env.bak/
+venv.bak/

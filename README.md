@@ -1,1 +1,1 @@
-# CANCER_HACKATHON
+# nvidia-research-assistant
