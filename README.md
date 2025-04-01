@@ -7,7 +7,7 @@ Hackathon by
 3.Dhrumil Patel
 
 
-Application-Streamlit : https://content-extraction-tool-hh9cxuyufdcnur47bpteae.streamlit.app/
+Application-Streamlit : https://cancerhackathon-fy6ylsjip9n6mbflotp9jv.streamlit.app/
 
 Backend API-Google Cloud: https://content-extraction-api-607698884796.us-central1.run.app/docs
 
@@ -102,7 +102,7 @@ Easily scalable for new disease domains
 1. Clone the repository:
 ```bash
 git clone https://github.com/DAMG7250-Team1/CACNER_HACKATHON.git
-cd nvidia-research-assistant
+cd project directory
 ```
 
 2. Create and activate virtual environment:
@@ -193,7 +193,8 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 - Northeastern University
 
 ## Acknowledgments
-- NVIDIA
+- SEER
+- CDC
 - OpenAI
 - Snowflake
 # 
