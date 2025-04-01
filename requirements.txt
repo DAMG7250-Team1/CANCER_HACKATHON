@@ -34,3 +34,12 @@ scikit-learn
 scikit-fuzzy
 python-dotenv
 kaleido
+snowflake-connector-python>=3.0.0
+requests>=2.28.0
+beautifulsoup4>=4.11.0
+pandas>=2.2.0
+plotly>=5.18.0
+
+langchain>=0.1.0
+
+faiss-cpu>=1.7.4
