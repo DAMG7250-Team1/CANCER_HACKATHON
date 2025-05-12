@@ -1,164 +1,129 @@
+# 🔬 Cancer Research Assistant
 
-# 🔬 Cancer Research Report Generator
-
-This is a multi-agent AI-powered research assistant that generates comprehensive cancer reports using:
-
-- 📊 **Cancer statistics** from Snowflake
-- 📚 **Literature summary** via RAG using OpenAI + PDFs in S3
-- 🌐 **Real-time clinical data** via Tavily Web Search
+A multi-agent AI-powered system for generating comprehensive cancer research reports.  
+It combines structured cancer statistics (Snowflake), research literature (RAG from S3), and real-time clinical trial data (Tavily API) — summarized by OpenAI GPT.
 
 ---
 
-## 🧠 System Architecture
+## 🚀 Features
 
-```mermaid
-graph TD
-    A[User Inputs Query via Streamlit UI] --> B[FastAPI Backend - /generate_report]
-    B --> C[Multi-Agent MCP Controller]
+- 📈 **Snowflake Agent**: Pulls structured cancer data (e.g., by site, year, population)
+- 📚 **RAG Agent**: Fetches & summarizes PDF research from S3 using OpenAI
+- 🌐 **Web Agent**: Scrapes real-time clinical trial info via Tavily
+- 🧠 **MCP**: Orchestrates all agents and routes data to OpenAI for final report
+- 🖥️ **Frontend**: Streamlit dashboard to visualize results and download PDF
 
-    C --> D[Snowflake Agent - Cancer Statistics]
-    C --> E[RAG Agent - Research Literature from S3 + OpenAI]
-    C --> F[Web Agent - Clinical Trials from Tavily]
+---
 
-    D --> G[Returns Structured Stats]
-    E --> H[Returns RAG Summary]
-    F --> I[Returns Clinical Trials (Markdown)]
+## 🧠 Architecture Overview
 
-    G --> J[API Aggregates]
-    H --> J
-    I --> J
-
-    J --> K[Streamlit UI Displays & Plots Data]
-    K --> L[Downloadable PDF Report]
+```
+User Query → Streamlit UI
+            ↓
+        FastAPI Backend
+            ↓
+     CancerResearchMCP (Coordinator)
+       ├── SnowflakeAgent → stats
+       ├── RAGAgent → S3 → Markdown → OpenAI
+       └── WebAgent → Tavily API
+            ↓
+  All data passed to OpenAI → GPT-4o → Final Report
+            ↓
+  Streamlit UI ← Full report + PDF download
 ```
 
 ---
 
-## 🔄 System Flow
+## ⚙️ Setup Instructions
 
-This system follows a **multi-agent pipeline architecture** for generating cancer research reports based on user queries.
-
-### Step-by-Step Flow:
-
-1. ### 🧑‍💻 User Input via Streamlit (`app.py`)
-   - Users interact with a simple UI to enter their **research query**.
-   - Upon clicking “Generate Report”, the query is sent to the FastAPI backend:
-     ```http
-     POST /generate_report { "query": "..." }
-     ```
-
-2. ### 🚀 FastAPI Orchestrator (`main.py`)
-   - Handles incoming requests and invokes the `CancerResearchMCP` controller to coordinate multiple agents.
-
-3. ### 🧠 MCP (Model Contextual Protocol) Controller (`mcp.py`)
-   - Coordinates three domain-specific agents:
-
-     - 🔹 **Snowflake Agent**  
-       Queries cancer statistics from Snowflake tables (`by_site`, `incident`, `mortality`, `child_cases`).
-     
-     - 🔹 **RAG Agent**  
-       Downloads relevant cancer PDFs from S3 → converts to Markdown via `mistral_parser.py` → summarizes via OpenAI GPT-4o-mini.
-
-     - 🔹 **Web Agent**  
-       Uses Tavily to fetch live clinical trials related to the query (title, phase, status, source).
-
-4. ### 📦 Data Aggregation
-   - MCP compiles the outputs:
-     ```json
-     {
-       "snowflake_data": {...},
-       "rag_data": { "summary": "..." },
-       "web_data": "<clinical trials in markdown>"
-     }
-     ```
-
-5. ### 📊 Frontend Visualization
-   - Streamlit renders:
-     - **Dataframes** and **charts** from Snowflake data
-     - **Research summaries** and **clinical trials**
-     - PDF report generated using XHTML2PDF
-
----
-
-## 📁 Project Structure
-
-```
-├── app.py                     # Streamlit UI
-├── main.py                    # FastAPI app (entrypoint)
-├── mcp.py                     # MCP orchestrator for all agents
-├── agents/
-│   ├── snowflake_agent.py     # Structured cancer data from Snowflake
-│   ├── rag_agent.py           # S3 document loader + OpenAI summarization
-│   ├── web_agent.py           # Tavily clinical trial + literature search
-├── core/
-│   └── s3_client.py           # AWS S3 PDF manager
-├── features/
-│   ├── mistral_parser.py      # PDF to Markdown converter
-│   └── chunking_stratergy.py  # (Optional) Markdown chunker
-├── requirements.txt
-├── .env
-```
-
----
-
-## 🚀 Getting Started
-
-### 1. Setup Environment
-
+### 1. Install Dependencies
 ```bash
-python -m venv env
-source env/bin/activate  # or .\env\Scripts\activate on Windows
-
 pip install -r requirements.txt
 ```
 
-### 2. .env Configuration
+### 2. Set Environment Variables
 
-```
+Create a `.env` file:
+
+```env
 # Snowflake
-SNOWFLAKE_ACCOUNT=xyz-region
+SNOWFLAKE_ACCOUNT=your_account
 SNOWFLAKE_USER=your_user
 SNOWFLAKE_PASSWORD=your_pass
-SNOWFLAKE_DATABASE=your_db
 SNOWFLAKE_WAREHOUSE=your_wh
+SNOWFLAKE_DATABASE=your_db
 SNOWFLAKE_SCHEMA=cdc
 
-# AWS
-AWS_ACCESS_KEY_ID=...
-AWS_SECRET_ACCESS_KEY=...
-AWS_BUCKET_NAME=your-bucket
+# AWS S3
+AWS_ACCESS_KEY_ID=your_key
+AWS_SECRET_ACCESS_KEY=your_secret
 AWS_REGION=us-east-1
+AWS_BUCKET_NAME=your-bucket-name
 
 # OpenAI
-OPENAI_API_KEY=sk-...
+OPENAI_API_KEY=your_openai_key
 
 # Tavily
-TAVILY_API_KEY=...
+TAVILY_API_KEY=your_tavily_key
 ```
 
-### 3. Run Services
+### 3. Run Backend (FastAPI)
 
 ```bash
-# Start backend
-uvicorn main:app --reload --port 8000
+uvicorn main:app --reload
+```
 
-# Launch frontend
+### 4. Run Frontend (Streamlit)
+
+```bash
 streamlit run app.py
 ```
 
 ---
 
-## 🧪 Example Query
+## 📂 Project Structure
 
-Try: **“What were child lung cancer trends in 2010?”**
+```
+├── app.py               # Streamlit frontend
+├── main.py              # FastAPI backend
+├── mcp/                 # Multi-agent orchestrator
+│   └── mcp.py
+├── backend/agents/      # Sub-agents
+│   ├── snowflake_agent.py
+│   ├── rag_agent.py
+│   └── web_agent.py
+├── core/
+│   └── s3_client.py
+├── features/
+    ├── mistral_parser.py
+    └── chunking_stratergy.py
+```
 
 ---
 
-## 🛠 Tech Stack
+## 📄 Output
 
-| Layer         | Tools                                    |
-|---------------|-------------------------------------------|
-| Frontend UI   | Streamlit, Plotly                         |
-| Backend API   | FastAPI, Uvicorn                          |
-| Agents        | OpenAI (RAG), Snowflake, Tavily, S3       |
-| PDF Handling  | XHTML2PDF, PyMuPDF                        |
+- ✅ Streamlit displays the AI-generated report
+- ✅ Option to download a nicely formatted **PDF**
+- ✅ Works with all cancer-related queries (e.g., “brain cancer in children in 2010”)
+
+---
+
+## 🤝 Credits
+
+Built for [NEU DAMG Hackathon 2025].  
+Uses: Snowflake, AWS S3, OpenAI, Tavily, Streamlit, FastAPI.
+
+---
+
+## 🤪 Sample Query
+
+```
+What are the trends in child brain cancer from 2000–2020?
+```
+
+Will fetch:
+- Snowflake statistics
+- S3 research papers
+- Clinical trial updates
+And generate a unified report with graphs, markdown, and downloadable PDF.
