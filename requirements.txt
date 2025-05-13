@@ -33,3 +33,4 @@ pdfplumber
 requests
 beautifulsoup4
 
+markdown2
