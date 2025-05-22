@@ -34,3 +34,5 @@ requests
 beautifulsoup4
 
 markdown2
+httpx
+pydantic
