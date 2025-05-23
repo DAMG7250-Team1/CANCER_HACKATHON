@@ -5,16 +5,16 @@ FROM python:3.11-slim
 WORKDIR /app
 ENV PYTHONPATH=/app
 
-# Install dependencies
-COPY backend/requirements.txt .
+# Install dependencies from backend requirements
+COPY backend/requirements.txt ./requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy code for both services
-COPY backend/ backend/
-COPY mcp/     mcp/
+# Copy backend and mcp code into the image
+COPY backend/ ./backend/
+COPY mcp/     ./mcp/
 
-# Expose your FastAPI port
+# Expose FastAPI port
 EXPOSE 8000
 
-# Launch uvicorn pointing to your app in backend/main.py
+# Launch uvicorn, pointing at backend/main.py
 CMD ["uvicorn", "backend.main:app", "--host", "0.0.0.0", "--port", "8000"]
