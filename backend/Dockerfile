@@ -9,7 +9,8 @@ COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 # 4. Copy your source code
-COPY . .
+COPY . .            
+COPY ../mcp ./mcp   
 
 # 5. Expose the port your FastAPI runs on
 EXPOSE 8000
