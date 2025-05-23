@@ -13,8 +13,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY backend/ ./backend/
 COPY backend/core/ ./core/
 COPY backend/features/ ./features/
-COPY backend/mcp/ ./mcp/
-COPY backend/utils/ ./utils/
+COPY mcp/ ./mcp/
+
 
 # Expose FastAPI port
 EXPOSE 8000
