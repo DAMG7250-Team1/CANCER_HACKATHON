@@ -185,7 +185,7 @@ class CancerResearchMCP:
                 model="gpt-4.1-mini",
                 messages=[{"role": "user", "content": prompt}],
                 temperature=0.7,
-                max_tokens=7000
+                max_tokens=3000
             )
 
             full_report = response.choices[0].message.content
