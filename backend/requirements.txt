@@ -1,0 +1,33 @@
+
+# Backend API
+fastapi
+uvicorn
+
+# Database (Snowflake)
+snowflake-connector-python
+snowflake-sqlalchemy
+sqlalchemy
+
+# AI/ML + Embeddings
+openai
+pinecone
+
+# AWS S3 Support
+boto3
+
+# Data Processing
+pandas
+numpy
+python-dotenv
+
+# PDF Processing
+PyMuPDF
+pdfplumber
+
+# Web Requests & Parsing
+requests
+beautifulsoup4
+
+markdown2
+httpx
+pydantic
