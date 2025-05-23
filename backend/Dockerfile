@@ -1,22 +1,20 @@
-# 1. Base image
+# Use the official slim Python image
 FROM python:3.11-slim
 
-# 2. Set a working directory
+# Set working dir & make it importable
 WORKDIR /app
+ENV PYTHONPATH=/app
 
-# 3. Copy requirements and install
-COPY requirements.txt .
+# Install dependencies
+COPY backend/requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# 4. Copy your source code
-COPY . .            
-COPY ../mcp ./mcp   
+# Copy code for both services
+COPY backend/ backend/
+COPY mcp/     mcp/
 
-# 5. Expose the port your FastAPI runs on
+# Expose your FastAPI port
 EXPOSE 8000
 
-# 6. (Optional) Pre-download SpaCy model if needed
-# RUN python -m spacy download en_core_web_sm
-
-# 7. Default command to run the server
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
+# Launch uvicorn pointing to your app in backend/main.py
+CMD ["uvicorn", "backend.main:app", "--host", "0.0.0.0", "--port", "8000"]
