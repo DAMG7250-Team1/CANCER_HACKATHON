@@ -6,6 +6,18 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
 import os
 import io
 import re
@@ -15,6 +27,7 @@ import markdown2
 from xhtml2pdf import pisa
 import streamlit as st
 from requests.exceptions import Timeout, RequestException
+from streamlit.components.v1 import html as st_html
 
 # --- Configuration ---
 
@@ -25,8 +38,7 @@ def get_backend_url():
     except Exception:
         return os.getenv("BACKEND_URL", "http://localhost:8000")
 
-# BACKEND_URL = get_backend_url()
-BACKEND_URL = "http://34.67.158.206"
+BACKEND_URL = get_backend_url()
 
 # --- Core Functions ---
 
@@ -43,19 +55,21 @@ def generate_report(query: str) -> str:
 
 
 def convert_md_to_html(report_md: str) -> str:
-    """Convert Markdown to HTML with styling, embed images."""
-    # Convert Markdown to HTML with link auto-detection
+    """Convert Markdown to HTML with styling, embed images, and strip front-matter."""
+    # Use the 'metadata' extra to drop any YAML/front-matter at the top
     html_body = markdown2.markdown(
         report_md,
-        extras=["tables", "fenced-code-blocks", "linkify"]
+        extras=["metadata", "tables", "fenced-code-blocks", "linkify"]
     )
-    # CSS styling for PDF and display
-    html_template = f"""
+
+    # Full HTML skeleton with CSS
+    html = f"""
+    <!DOCTYPE html>
     <html>
       <head>
         <meta charset="utf-8">
         <style>
-          body {{ font-family: serif; font-size: 13pt; line-height:1.4; }}
+          body {{ font-family: serif; font-size: 13pt; line-height:1.4; margin: 1em; }}
           h1 {{ font-size: 24pt; margin-bottom: 0.5em; }}
           h2 {{ font-size: 18pt; margin-top:1em; margin-bottom:0.4em; }}
           h3 {{ font-size: 14pt; margin-top:0.8em; }}
@@ -68,9 +82,10 @@ def convert_md_to_html(report_md: str) -> str:
       </head>
       <body>
         {html_body}
-      
+      </body>
+    </html>
     """
-    return embed_images(html_template)
+    return embed_images(html)
 
 
 def embed_images(html: str) -> str:
@@ -78,7 +93,7 @@ def embed_images(html: str) -> str:
     def repl(match):
         url = match.group(1)
         try:
-            resp = requests.get(url)
+            resp = requests.get(url, timeout=10)
             if resp.status_code == 200:
                 ext = url.split(".")[-1].split("?")[0].lower()
                 mime = 'image/png' if ext == 'png' else 'image/jpeg'
@@ -87,7 +102,8 @@ def embed_images(html: str) -> str:
         except Exception:
             pass
         return match.group(0)
-    return re.sub(r'<img src="([^\"]+)"', repl, html)
+
+    return re.sub(r'<img src="([^"]+)"', repl, html)
 
 
 def convert_html_to_pdf(html: str) -> bytes | None:
@@ -101,8 +117,8 @@ def convert_html_to_pdf(html: str) -> bytes | None:
 # --- Streamlit Interface ---
 
 st.set_page_config(page_title="Cancer Research Report", layout="wide")
-
 st.title("📝 Cancer Research Report Generator")
+
 query = st.text_input("Enter your research query:")
 
 if st.button("Generate Report"):
@@ -116,10 +132,11 @@ if st.button("Generate Report"):
                     st.warning("No report content returned from backend.")
                 else:
                     html_report = convert_md_to_html(report_md)
-                    # Display HTML with images and links
-                    st.markdown(html_report, unsafe_allow_html=True)
 
-                    # PDF Download
+                    # Render full HTML (with CSS) in an iframe-like component
+                    st_html(html_report, height=800, scrolling=True)
+
+                    # Provide a PDF download of the same content
                     pdf_data = convert_html_to_pdf(html_report)
                     if pdf_data:
                         st.download_button(

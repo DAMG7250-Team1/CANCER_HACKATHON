@@ -36,3 +36,6 @@ beautifulsoup4
 markdown2
 httpx
 pydantic
+tiktoken
+google-generativeai
+google-genai
