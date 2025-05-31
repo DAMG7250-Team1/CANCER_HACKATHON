@@ -39,3 +39,4 @@ pydantic
 tiktoken
 google-generativeai
 google-genai
+tabulate

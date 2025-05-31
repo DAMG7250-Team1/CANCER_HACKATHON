@@ -38,9 +38,9 @@ def get_backend_url():
     except Exception:
         return os.getenv("BACKEND_URL", "http://localhost:8000")
 
-# BACKEND_URL = get_backend_url()
+BACKEND_URL = get_backend_url()
 
-BACKEND_URL = "http://34.67.158.206"
+# BACKEND_URL = "http://34.67.158.206"
 
 # --- Core Functions ---
 
@@ -49,7 +49,7 @@ def generate_report(query: str) -> str:
     response = requests.post(
         f"{BACKEND_URL}/generate_report",
         json={"query": query},
-        timeout=300
+        timeout=500
     )
     response.raise_for_status()
     data = response.json()
