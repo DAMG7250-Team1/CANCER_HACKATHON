@@ -1,14 +1,14 @@
 # 🔬 Cancer Research Assistant
 
 A multi-agent AI-powered system for generating comprehensive cancer research reports.  
-It combines structured cancer statistics (Snowflake), research literature (RAG from S3), and real-time clinical trial data (Tavily API) — summarized by OpenAI GPT.
+It combines structured cancer statistics (Snowflake), research literature (RAG from S3), and real-time clinical trial data (Tavily API) — summarized by OpenAI GPT and Google GEMINI.
 
 ---
 
 ## 🚀 Features
 
 - 📈 **Snowflake Agent**: Pulls structured cancer data (e.g., by site, year, population)
-- 📚 **RAG Agent**: Fetches & summarizes PDF research from S3 using OpenAI
+- 📚 **RAG Agent**: Fetches & summarizes PDF research from S3 using OpenAI, GEMINI
 - 🌐 **Web Agent**: Scrapes real-time clinical trial info via Tavily
 - 🧠 **MCP**: Orchestrates all agents and routes data to OpenAI for final report
 - 🖥️ **Frontend**: Streamlit dashboard to visualize results and download PDF
@@ -27,7 +27,7 @@ User Query → Streamlit UI
        ├── RAGAgent → S3 → Markdown → OpenAI
        └── WebAgent → Tavily API
             ↓
-  All data passed to OpenAI → GPT-4o → Final Report
+  All data passed to OpenAI → GPT-4o/Gemini Flash-2.5 → Final Report
             ↓
   Streamlit UI ← Full report + PDF download
 ```
@@ -62,7 +62,8 @@ AWS_BUCKET_NAME=your-bucket-name
 
 # OpenAI
 OPENAI_API_KEY=your_openai_key
-
+#Gemini
+GEMINI_API_KEY = your_gemini_key
 # Tavily
 TAVILY_API_KEY=your_tavily_key
 ```
@@ -112,7 +113,7 @@ streamlit run app.py
 ## 🤝 Credits
 
 Built for [NEU DAMG Hackathon 2025].  
-Uses: Snowflake, AWS S3, OpenAI, Tavily, Streamlit, FastAPI.
+Uses: Snowflake, AWS S3, OpenAI, Tavily, Streamlit, FastAPI, Gemini, Langgraph.
 
 ---
 
@@ -134,5 +135,5 @@ And generate a unified report with graphs, markdown, and downloadable PDF.
 ```
 using GPT - https://github.com/DAMG7250-Team1/CANCER_HACKATHON/blob/main/cancer_research_report%20using%20GPT%20model.pdf
 
-and Gemini - 
+and Gemini - https://github.com/DAMG7250-Team1/CANCER_HACKATHON/blob/main/cancer_research_report%20using%20Gemini%20model.pdf
 ```
