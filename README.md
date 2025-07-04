@@ -132,5 +132,7 @@ And generate a unified report with graphs, markdown, and downloadable PDF.
 ##  Outcome
 
 ```
-using GPT and Gemini model report generated
+using GPT - https://github.com/DAMG7250-Team1/CANCER_HACKATHON/blob/main/cancer_research_report%20using%20GPT%20model.pdf
+
+and Gemini - 
 ```
