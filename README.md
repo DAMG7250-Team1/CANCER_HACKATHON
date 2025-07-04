@@ -133,7 +133,15 @@ And generate a unified report with graphs, markdown, and downloadable PDF.
 ##  Outcome
 
 ```
-using GPT - https://github.com/DAMG7250-Team1/CANCER_HACKATHON/blob/main/cancer_research_report%20using%20GPT%20model.pdf
+using GPT -  ([GPT report]([https://your-link-url.com](https://github.com/DAMG7250-Team1/CANCER_HACKATHON/blob/main/cancer_research_report%20using%20GPT%20model.pdf)))
 
-and Gemini - https://github.com/DAMG7250-Team1/CANCER_HACKATHON/blob/main/cancer_research_report%20using%20Gemini%20model.pdf
+and Gemini - ([Gemini report]([https://your-link-url.com](https://github.com/DAMG7250-Team1/CANCER_HACKATHON/blob/main/cancer_research_report%20using%20Gemini%20model.pdf)))
+
+```
+##  Teams
+
+```
+1 - Dhrumil Patel
+2 - Sahil Kasliwal
+3 - Hussain 
 ```
