@@ -127,3 +127,10 @@ Will fetch:
 - S3 research papers
 - Clinical trial updates
 And generate a unified report with graphs, markdown, and downloadable PDF.
+
+
+##  Outcome
+
+```
+using GPT and Gemini model report generated
+```
